@@ -1,0 +1,1 @@
+#Insructions for Configuring a Explorer Plugin
