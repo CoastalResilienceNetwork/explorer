@@ -6,21 +6,10 @@
     "betweenGroups": "*",
     "averageGroups": true,
 	"infoGraphic": "RiskExplorer_c.jpg",
-	"pluginHeight": 550,
+	"pluginHeight": 400,
     "regions": [
         {
             "items": [
-                {
-                    "default": 1,
-                    "index": "vi_m_h",
-                    "max": 1,
-                    "min": 0,
-                    "step": 1,
-                    "text": "With Sea Level Rise",
-                    "type": "layer",
-                    "group": "muex1",
-					"visible": false
-                },
                 {
                     "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
                     "type": "text"
