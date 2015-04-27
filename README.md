@@ -10,7 +10,7 @@ To create an explorer plugin you must do three things.
 
 ## Preparing and Publishing the Data
 
-The data that you use should all be in one layer.  If your data is in multiple layers you should use an overlay function (Union or Intersect) to get your data into a single layer.  Identify which attributes from your layer will be used for the sliders).  Often it can reduce the size of your data if you dissolve your layer using ALL of the necessary attribute fields as the basis for your dissolve.
+The data that you use should all be in one layer.  You need to have a single attribute (column) in your data for each control (slider or checkbox).  If your data is in multiple layers you should use an overlay function (Union or Intersect) to get your data into a single layer.  Before running the overlay function, you need to have the attribute column set up in each of the input layers.  Note Merge or Append will not work as those tools only stack the units rather than combine them.  After you have a single layer, identify which attributes from your layer will be used for the sliders.  Often it can reduce the size of your data if you dissolve your layer using ALL of the necessary attribute fields as the basis for your dissolve.
 
 Once you have this single layer, you need to place this layer into an enterprise GIS database.  For coastal resilience there is already one set up for this purpose.  You can connect to this database in ArcCatalog by navigating to the database connections section and right clicking --> "Add Connection".  Then use the following information to connect:
 
