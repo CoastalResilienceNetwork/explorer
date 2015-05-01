@@ -112,6 +112,7 @@ define([
 			   infoGraphic: _infographic, //"plugins/restoration_explorer/RestorationExplorer_c.jpg",
 			   height: _config.pluginHeight,
          stateRestore: false,
+         subs: false,
 
 
         activate: function () {
@@ -128,15 +129,15 @@ define([
 						this.ancillaryLayer.setVisibility(true);
 					}
 
+          this.usableRegions = this.explorerObject.regions;
+
           if (this.stateRestore == false) {
 
             if (this._hasactivated == false) {
-              this.usableRegions = this.explorerObject.regions;
               this.rebuildOptions();
             }
 
   					if ((this._hasactivated == false) && (this.usableRegions.length == 1)) {
-              alert(this._hasactivated)
   						this.changeGeography(this.usableRegions[0], true);
 
   					};
@@ -153,6 +154,10 @@ define([
           }
 
 
+        }
+
+        if (this.subs == true) {
+          this.changeGeography(this.usableRegions[0], true);
         }
 
 					this._hasactivated = true;
@@ -1368,6 +1373,7 @@ define([
               }
             }));
 
+            this.subs = true;
             //domConstruct.empty(this.regionChooserContainer);
 
             //console.log(this.mainData);
@@ -1379,7 +1385,7 @@ define([
           subregionDeactivated: function(subregion) {
 
             console.debug('now leaving subregion ' + subregion.display);
-
+            this.subs = false;
             //domConstruct.empty(this.regionChooserContainer);
 
             this.usableRegions = this.explorerObject.regions;
