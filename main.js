@@ -227,7 +227,9 @@ define([
 
 					}
 
-					//domStyle.set(this.sliderpane.domNode, "height", this.sph + "px");
+          if (this.sliderpane != undefined) {
+					       domStyle.set(this.sliderpane.domNode, "height", this.sph + "px");
+          }
 
 				 },
 
