@@ -585,6 +585,12 @@ define([
 
 							//alert(outslid);
 
+              if (this.geography.sliderLabels != undefined) {
+
+                outslid = "<li>" + this.geography.sliderLabels.join("</li><li>") + "</li>"
+
+              }
+
 							if (steps == 2) {
 
 							nslidernode = domConstruct.create("div");
@@ -1095,6 +1101,7 @@ define([
              + '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100px" height="' + lh + '">'
              + innerSyms
              + '<text x="35" y="15" fill="black">Low</text>'
+             + '<text x="35" y="' + ((maxy + 15) / 2) + '" fill="black">Meduim</text>'
              + '<text x="35" y="' + maxy + '" fill="black">High</text></svg>'
 
 					   //noleg = dom.byId("legend-0_msg")
