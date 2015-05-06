@@ -826,6 +826,7 @@ define([
 					}
 
 					this.BandFormula = new Array();
+          this.GroupTotals = new Array();
 
 					cgroup = "";
 
@@ -840,6 +841,7 @@ define([
 							}
 
 							cbf = new Array();
+              hottytot = 0;
 
 							cgroup = entry.name;
 
@@ -860,6 +862,7 @@ define([
 
 						if (entry.value > 0) {
 							cbf.push("(" + entry.value + " * " + entry.index + ")");
+              hottytot = hottytot + entry.value;
 						}
 
 						array.forEach(this.geography.items, lang.hitch(this,function(gitem, j){
@@ -877,6 +880,7 @@ define([
 					}));
 
 					this.BandFormula.push(cbf)
+          this.GroupTotals.push(hottytot)
 
 					console.log(this.BandFormula);
 
@@ -886,7 +890,7 @@ define([
 
 					 if (this.explorerObject.averageGroups == true) {
 						  if (bgroup.length > 0) {
-							outform.push("((" + bgroup.join(" + ") + ") / " + bgroup.length + ")");
+							outform.push("((" + bgroup.join(" + ") + ") / " + this.GroupTotals[i] + ")");
 						  }
 					  } else {
 						outform.push("(" + bgroup.join(" + ") + ")");
@@ -1045,19 +1049,53 @@ define([
 //	}
 //			);
 
+      if (this.formula == "")
+      this.formula = "(B1 * 0)"
 			rasterFunction.functionName = "BandArithmetic";
-						arguments = {};
+						arguments = {"Raster" : "$$"};
 						arguments.Method= 0;
 						arguments.BandIndexes = this.formula;
 						rasterFunction.arguments = arguments;
-						rasterFunction.variableName = "Raster";
+						rasterFunction.variableName = "riskOutput";
+            rasterFunction.outputPixelType = "U8";
 
-						this.currentLayer.setRenderingRule(rasterFunction);
+            rf = new RasterFunction();
+            rf.functionName = "Remap";
+            rf.functionArguments = {
+              "InputRanges" : this.geography.inputRanges,
+              "OutputValues" : this.geography.outputValues,
+              "Raster" : rasterFunction
+            };
+            rf.variableName = "riskOutput";
+            rf.outputPixelType = "U8";
+
+            colorRF = new RasterFunction();
+            colorRF.functionName = "Colormap";
+            colorRF.variableName = "riskOutput";
+            colorRF.functionArguments = {
+              "Colormap" : this.geography.colorRamp,
+              "Raster" : rf  //use the output of the remap rasterFunction for the Colormap rasterFunction
+            };
+
+						this.currentLayer.setRenderingRule(colorRF);
 
 					   //legenddiv = domConstruct.create("img", {src:"height:400px", innerHTML: "<b>" + "Legend for Restoration"  + ":</b>"});
 					   //dom.byId(this.legendContainer).appendChild(this.legenddiv);
+             innerSyms = ""
+             array.forEach(this.geography.colorRamp, lang.hitch(this,function(cColor, i){
 
-					   this.legendContainer.innerHTML = '<div style="margin-bottom:7px">' + this.toolbarName + '</div><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100px" height="90px"><rect x="0" y ="60" width="30" height="20" style="fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)" /><rect x="0" y ="30" width="30" height="20" style="fill:rgb(125,125,125);stroke-width:1;stroke:rgb(0,0,0)" /><rect width="30" height="20" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)" /><text x="35" y="15" fill="black">High</text><text x="35" y="45" fill="black">Medium</text><text x="35" y="75" fill="black">Low</text></svg>'
+               innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:0;stroke:rgb(0,0,0)" />'
+
+
+             }));
+
+             lh = ((this.geography.colorRamp.length) * 30) + 10
+             maxy = ((this.geography.colorRamp.length) * 30) - 15
+					   this.legendContainer.innerHTML = '<div style="margin-bottom:7px">' + this.toolbarName + '</div>'
+             + '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100px" height="' + lh + '">'
+             + innerSyms
+             + '<text x="35" y="15" fill="black">Low</text>'
+             + '<text x="35" y="' + maxy + '" fill="black">High</text></svg>'
 
 					   //noleg = dom.byId("legend-0_msg")
 					   //domStyle.set(noleg, "display", "none");
