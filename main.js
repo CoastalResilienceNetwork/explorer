@@ -843,7 +843,7 @@ define([
 							if (cgroup != "") {
 
 								this.BandFormula.push(cbf)
-
+                this.GroupTotals.push(hottytot)
 							}
 
 							cbf = new Array();
@@ -868,6 +868,7 @@ define([
 
 						if (entry.value > 0) {
 							cbf.push("(" + entry.value + " * " + entry.index + ")");
+              //hottytot.push(entry.value)
               hottytot = hottytot + entry.value;
 						}
 
@@ -885,10 +886,8 @@ define([
 
 					}));
 
-					this.BandFormula.push(cbf)
-          this.GroupTotals.push(hottytot)
-
-					console.log(this.BandFormula);
+					this.BandFormula.push(cbf);
+          this.GroupTotals.push(hottytot);
 
 					outform = new Array();
 
@@ -931,6 +930,7 @@ define([
 							this.formula = "0::integer";
 
 						}
+
 
 						console.log("SELECT " + oFields + ", " + iFields + ", " + this.formula + " AS score FROM " + this.geography.dataset)
 
