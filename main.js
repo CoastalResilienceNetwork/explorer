@@ -101,6 +101,16 @@ define([
 				_infographic = localrequire.toUrl("./" + _infographic);
 
 			}
+			
+			if (_config.ddText != undefined) {
+
+				_ddText = _config.ddText;
+
+			} else {
+
+				_ddText = "Choose a Region";
+
+			}
 
 
            return declare(PluginBase, {
@@ -208,7 +218,7 @@ define([
 				domStyle.set(this.textnode, "display", "");
 
         if (this.button != undefined) {
-				      this.button.set("label","Choose a Region");
+				      this.button.set("label",_ddText);
         }
 
 				//this._hasactivated = false;
@@ -340,7 +350,7 @@ define([
 
 
 					this.button = new DropDownButton({
-						label: "Choose a Region",
+						label: _ddText,
 						style: "margin-bottom:6px !important",
 						dropDown: menu
 					});
